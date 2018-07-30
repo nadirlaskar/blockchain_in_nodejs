@@ -5,6 +5,10 @@ app.get('/',(req,res)=>{
     res.send(BlockChain.chain);
 });
 
+app.get('/status',(req,res)=>{
+    res.send("The system is under development.");
+});
+
 app.get('/mine',(req,res)=>{
     var prev_block = BlockChain.get_previous_block();
     var prev_proof =  prev_block.proof;
