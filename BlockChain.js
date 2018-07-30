@@ -23,12 +23,12 @@ class BlockChain {
         this.create_block();
     }
 
-    create_block(proof = 1 , previous_hash = '0'){
+    create_block(proof = 1 , previous_hash = '0',data={}){
         var block = new Block({
             index: this.chain.length+1,
             timestamp: new Date().getTime(),
             previous_hash : previous_hash,
-            data: {},
+            data: data,
             proof: proof
         });
 
