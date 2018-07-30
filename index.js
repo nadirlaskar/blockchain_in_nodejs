@@ -5,6 +5,13 @@ app.get('/',(req,res)=>{
     res.send(BlockChain.chain);
 });
 
+app.get('/blockchain',(req,res)=>{
+    res.send({
+        length: BlockChain.chain.length,
+        chain: BlockChain.chain
+    });
+});
+
 app.get('/status',(req,res)=>{
     res.send("The system is under development.");
 });
