@@ -66,7 +66,7 @@ class BlockChain {
 
         while(block_index<this.chain.length){
             var block = this.chain[block_index];
-            if(block.previous_hash!=hash(block)){
+            if(block.previous_hash!=hash(previous_block)){
                 return false;
             }
 
@@ -81,7 +81,7 @@ class BlockChain {
             }
 
             previous_block = block;
-            block_index ++;
+            block_index++;
         }
 
         return true;
