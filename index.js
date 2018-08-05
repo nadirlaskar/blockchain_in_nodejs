@@ -60,4 +60,19 @@ app.post('/connectNode',(req,res)=>{
     }else res.send({status: "Connection Aborted. Error" },201);
 });
 
+app.get('/replaceChain',(req,res)=>{
+    var isChainReplaced = BlockChain.replace_chain();
+    if(isChainReplaced){
+        res.send({
+                    status: `The blockchain is replaced by the longest chain.`,
+                    chain:  BlockChain.chain
+                });
+    }else{
+        res.send({ 
+                    status : `Block chain is not required to be replaced.`,
+                    chain: BlockChain.chain
+                });
+    }
+});
+
 app.listen(process.env.PORT || 3000, () => console.log('Blockchain app listening on port 3000!'))
