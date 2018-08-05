@@ -1,5 +1,7 @@
 /** MODULE 1 CREATE BLOCKCHAIN */
 const crypto = require('crypto');
+const axios = require('axios');
+const uuid = require('uuid/v4');
 
 class Block{
     constructor(config){
@@ -112,12 +114,12 @@ class BlockChain {
     replace_chain(){
         var network = this.nodes;
         var longestChain = null;
-        var max_length = this.chain.length;
-       await network.forEach(async (addr)=>{
+        var max_length = this.chain.length;  
+        await network.forEach(async (addr)=>{
             axios.get(`${addr}/blockchain`).then((n)=>{
                 if(n.length>max_length&&this.isChainValid(n.chain)){
-                  max_length = n.length;
-                  longestChain = n.chain;
+                    max_length = n.length;
+                    longestChain = n.chain;
                 }
             }).catch(e=>console.log(`Not Found Node ${addr}` ));
         });
