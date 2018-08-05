@@ -64,7 +64,7 @@ class BlockChain {
         return crypto.createHash('sha256').update(JSON.stringify(block)).digest('hex');
     }
 
-    isChainValid(checkChain){
+    isChainValid(checkChain = this.chain){
         var previous_block = checkChain[0];
         var block_index  = 1;
 

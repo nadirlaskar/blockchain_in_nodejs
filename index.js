@@ -29,7 +29,7 @@ app.get('/mine/:data',(req,res)=>{
 });
 
 app.get('/is_valid',(req,res)=>{
-    res.send(BlockChain.isChainValid(BlockChain.chain)?"Yes, blockchain is in valid state":"No, blockchain is not in valid state.")
+    res.send(BlockChain.isChainValid()?"Yes, blockchain is in valid state":"No, blockchain is not in valid state.")
 });
 
 app.listen(process.env.PORT || 3000, () => console.log('Blockchain app listening on port 3000!'))
