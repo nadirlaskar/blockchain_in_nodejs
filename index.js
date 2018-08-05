@@ -32,8 +32,18 @@ app.get('/mine',(req,res)=>{
     });
 });
 
-app.get('/is_valid',(req,res)=>{
+app.get('/isValid',(req,res)=>{
     res.send(BlockChain.isChainValid()?"Yes, blockchain is in valid state":"No, blockchain is not in valid state.")
+});
+
+app.post('/addTransaction',(req,res)=>{
+    var postData = req.body;
+    var block_index = -1;
+    if(postData.sender&&postData.receiver&&postData.amount){
+        block_index = BlockChain.addTransaction(postData.sender,postData.receiver,postData.amount);
+        res.send({status: `Transaction will be added to block ${block_index}`});
+    }
+    else res.send({status: "Corrupted Transaction Submitted. Error" },201);
 });
 
 app.listen(process.env.PORT || 3000, () => console.log('Blockchain app listening on port 3000!'))
