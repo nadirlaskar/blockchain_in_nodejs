@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 })); 
 
 app.get('/',(req,res)=>{
-    res.send(BlockChain.chain);
+    res.send({ address: node_address, nodes: BlockChain.nodes});
 });
 
 app.get('/blockchain',(req,res)=>{

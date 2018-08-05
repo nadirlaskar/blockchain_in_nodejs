@@ -113,11 +113,15 @@ class BlockChain {
      async replace_chain(){
         var network = this.nodes;
         var longestChain = null;
-        var max_length = this.chain.length;  
+        var max_length = this.chain.length,results;  
 
         let promiseArray = [...network].map( addr=> axios.get(`${addr}/blockchain`) );
-        let results =  await Promise.all( promiseArray );
 
+        try{            
+            results =  await Promise.all( promiseArray );
+        }catch(e){
+            results = [];
+        }
         results.forEach((n)=>{
             if(n.data.length>max_length&&this.isChainValid(n.data.chain)){
                 max_length = n.data.length;
