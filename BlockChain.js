@@ -119,7 +119,6 @@ class BlockChain {
                   max_length = n.length;
                   longestChain = n.chain;
                 }
-
             }).catch(e=>console.log(`Not Found Node ${addr}` ));
         });
 
