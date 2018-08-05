@@ -46,4 +46,18 @@ app.post('/addTransaction',(req,res)=>{
     else res.send({status: "Corrupted Transaction Submitted. Error" },201);
 });
 
+
+
+// Create New Nodes For Decentralized Blockchain
+app.post('/connectNode',(req,res)=>{
+    var postData = req.body;
+    var nodes = postData.nodes;
+    if(nodes){
+        nodes.forEach(node => {
+            BlockChain.add_node(node);
+        });
+        res.send({status: `Nodes Added Successfully`,nodes: BlockChain.nodes});
+    }else res.send({status: "Connection Aborted. Error" },201);
+});
+
 app.listen(process.env.PORT || 3000, () => console.log('Blockchain app listening on port 3000!'))
