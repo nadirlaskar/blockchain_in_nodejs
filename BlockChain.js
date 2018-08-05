@@ -71,7 +71,7 @@ class BlockChain {
 
         while(block_index<checkChain.length){
             var block = checkChain[block_index];
-            if(block.previous_hash!=hash(block)){
+            if(block.previous_hash!=this.hash(previous_block)){
                 return false;
             }
 
@@ -94,7 +94,7 @@ class BlockChain {
 
     // Add Transactions
     addTransaction(sender,receiver,amount){
-        this.transactions.append({
+        this.transactions.push({
             sender: sender,
             receiver:receiver,
             amount:amount
@@ -110,19 +110,21 @@ class BlockChain {
     }
 
     // Replace shorter chain with larger chain
-    replace_chain(){
+     async replace_chain(){
         var network = this.nodes;
         var longestChain = null;
         var max_length = this.chain.length;  
-        await network.forEach(async (addr)=>{
-            axios.get(`${addr}/blockchain`).then((n)=>{
-                if(n.length>max_length&&this.isChainValid(n.chain)){
-                    max_length = n.length;
-                    longestChain = n.chain;
-                }
-            }).catch(e=>console.log(`Not Found Node ${addr}` ));
-        });
 
+        let promiseArray = [...network].map( addr=> axios.get(`${addr}/blockchain`) );
+        let results =  await Promise.all( promiseArray );
+
+        results.forEach((n)=>{
+            if(n.data.length>max_length&&this.isChainValid(n.data.chain)){
+                max_length = n.data.length;
+                longestChain = n.data.chain;
+            }
+        });
+            
         if(longestChain!=null){
             this.chain = longestChain;
         }

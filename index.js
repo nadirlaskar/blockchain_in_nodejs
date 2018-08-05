@@ -1,8 +1,16 @@
 var BlockChain = new (require(`./BlockChain`))();
-var app = require('express')();
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser');
 const uuid = require('uuid/v4');
-const node_address = uuid().replace('-','');
+const node_address = uuid().replace(/[\-]/g,'');
 var MINE_REWARD = 10;
+
+
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
 
 app.get('/',(req,res)=>{
     res.send(BlockChain.chain);
@@ -56,23 +64,26 @@ app.post('/connectNode',(req,res)=>{
         nodes.forEach(node => {
             BlockChain.add_node(node);
         });
-        res.send({status: `Nodes Added Successfully`,nodes: BlockChain.nodes});
+        res.send({status: `Nodes Added Successfully`});
     }else res.send({status: "Connection Aborted. Error" },201);
 });
 
 app.get('/replaceChain',(req,res)=>{
-    var isChainReplaced = BlockChain.replace_chain();
+    BlockChain.replace_chain().then((isChainReplaced)=>{
     if(isChainReplaced){
         res.send({
                     status: `The blockchain is replaced by the longest chain.`,
                     chain:  BlockChain.chain
                 });
-    }else{
-        res.send({ 
-                    status : `Block chain is not required to be replaced.`,
-                    chain: BlockChain.chain
-                });
-    }
+        }else{
+            res.send({ 
+                        status : `Block chain is not required to be replaced.`,
+                        chain: BlockChain.chain
+                    });
+        }
+    });
 });
 
-app.listen(process.env.PORT || 3000, () => console.log('Blockchain app listening on port 3000!'))
+console.log(`My address is ${node_address}`);
+PORT = 3000;
+app.listen(process.env.PORT || PORT, () => console.log(`Blockchain app listening on port ${PORT}!`));
