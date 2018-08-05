@@ -64,12 +64,12 @@ class BlockChain {
         return crypto.createHash('sha256').update(JSON.stringify(block)).digest('hex');
     }
 
-    isChainValid(){
-        var previous_block = this.chain[0];
+    isChainValid(checkChain){
+        var previous_block = checkChain[0];
         var block_index  = 1;
 
-        while(block_index<this.chain.length){
-            var block = this.chain[block_index];
+        while(block_index<checkChain.length){
+            var block = checkChain[block_index];
             if(block.previous_hash!=hash(block)){
                 return false;
             }
@@ -113,13 +113,21 @@ class BlockChain {
         var network = this.nodes;
         var longestChain = null;
         var max_length = this.chain.length;
-        
        await network.forEach(async (addr)=>{
-            axios.get(addr).then((n)=>{
-                maxlength=n.length>max_length?n.length:max_length;
-            });
+            axios.get(`${addr}/blockchain`).then((n)=>{
+                if(n.length>max_length&&this.isChainValid(n.chain)){
+                  max_length = n.length;
+                  longestChain = n.chain;
+                }
+
+            }).catch(e=>console.log(`Not Found Node ${addr}` ));
         });
 
+        if(longestChain!=null){
+            this.chain = longestChain;
+        }
+
+        return longestChain!=null;
 
     }
 
