@@ -27,7 +27,7 @@ class BlockChain {
         this.nodes = new Set();
     }
 
-    create_block(proof = 1 , previous_hash = '0',data={}){
+    create_block(proof = 1 , previous_hash = '0'){
         var block = new Block({
             index: this.chain.length+1,
             timestamp: new Date().getTime(),
