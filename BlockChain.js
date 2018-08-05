@@ -1,7 +1,6 @@
 /** MODULE 1 CREATE BLOCKCHAIN */
 const crypto = require('crypto');
 const axios = require('axios');
-const uuid = require('uuid/v4');
 
 class Block{
     constructor(config){

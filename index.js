@@ -1,5 +1,7 @@
 var BlockChain = new (require(`./BlockChain`))();
 var app = require('express')();
+const uuid = require('uuid/v4');
+const node_address = uuid().replace('-','');
 
 app.get('/',(req,res)=>{
     res.send(BlockChain.chain);
