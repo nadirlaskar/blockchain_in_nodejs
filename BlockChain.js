@@ -72,7 +72,7 @@ class BlockChain {
         while(block_index<checkChain.length){
             var block = checkChain[block_index];
             if(block.previous_hash!=this.hash(previous_block)){
-                return false;
+        return false;
             }
 
             var previous_proof = previous_block.proof;
