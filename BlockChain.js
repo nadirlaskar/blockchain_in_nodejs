@@ -20,6 +20,9 @@ class BlockChain {
     constructor(){
         this.chain = [];
         console.log("Creating Genisis Block!");
+
+        this.transactions = []; //create transaction
+        
         this.create_block();
     }
 
@@ -28,10 +31,11 @@ class BlockChain {
             index: this.chain.length+1,
             timestamp: new Date().getTime(),
             previous_hash : previous_hash,
-            data: data,
+            data: this.transactions,
             proof: proof
         });
 
+        this.transactions = []; //empty transactions
         this.chain.push(block);
 
         return block;
@@ -86,6 +90,18 @@ class BlockChain {
 
         return true;
     }
+
+    // Add Transactions
+    addTransaction(sender,receiver,amount){
+        this.transactions.append({
+            sender: sender,
+            receiver:receiver,
+            amount:amount
+        });
+
+        return this.get_previous_block().index+1;
+    }
 }
+
 
 module.exports = BlockChain;
