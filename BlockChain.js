@@ -22,8 +22,8 @@ class BlockChain {
         console.log("Creating Genisis Block!");
 
         this.transactions = []; //create transaction
-        
         this.create_block();
+        this.nodes = new Set();
     }
 
     create_block(proof = 1 , previous_hash = '0',data={}){
@@ -101,7 +101,27 @@ class BlockChain {
 
         return this.get_previous_block().index+1;
     }
+
+    
+    add_node(address){
+        var addr = address;; //parse address;
+        this.nodes.add(address); //pdate address to node set.
+    }
+
+    // Replace shorter chain with larger chain
+    replace_chain(){
+        var network = this.nodes;
+        var longestChain = null;
+        var max_length = this.chain.length;
+        
+       await network.forEach(async (addr)=>{
+            axios.get(addr).then((n)=>{
+                maxlength=n.length>max_length?n.length:max_length;
+            });
+        });
+
+
+    }
+
 }
-
-
 module.exports = BlockChain;
